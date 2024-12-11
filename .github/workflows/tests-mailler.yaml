@@ -1,0 +1,13 @@
+name: tests-mailer
+
+on:
+  pull_request:
+    paths:
+      - 'services/mailer/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: cd services/mailer && npm install && npm run test:ci

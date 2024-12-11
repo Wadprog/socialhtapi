@@ -1,0 +1,13 @@
+name: tests-orders
+
+on:
+  pull_request:
+    paths:
+      - 'services/chat/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: cd services/chat && npm install && npm run test:ci

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mailer-posgres-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mailer-posgres
+  template:
+    metadata:
+      labels:
+        app: mailer-posgres
+    spec:
+      containers:
+        - name: mailer-posgres
+          image: 'postgres:12'
+          env:
+            - name: POSTGRES_DB
+              value: mailer
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+          ports:
+            - containerPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mailer-posgres-srv
+spec:
+  selector:
+    app: mailer-posgres
+  ports:
+    - name: db
+      protocol: TCP
+      port: 5432
+      targetPort: 5432

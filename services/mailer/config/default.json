@@ -1,0 +1,6 @@
+{
+  "dbSettings": {
+    "dialect": "postgres",
+    "seederStorage": "sequelize"
+  }
+}

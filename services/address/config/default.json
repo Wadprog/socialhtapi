@@ -1,0 +1,11 @@
+{
+
+  "dbSettings": {
+    "dialect": "postgres",
+    "seederStorage": "sequelize"
+  },
+  
+  "JWT_SECRET": "JWT_SECRET",
+
+  "ROOT_USER_PASSWORD_SECURE": "ROOT_USER_PASSWORD_SECURE"
+}
