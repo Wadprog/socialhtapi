@@ -6,8 +6,12 @@ deploy:
       - ./infra/k8s/*
       - ./infra/k8s-dev/*
 build:
+  local:
+    push: false
+  tagPolicy:
+    gitCommit: {}
   artifacts:
-    - image: waddProg/vwanu_address
+    - image: waddProg/vwn_address
       context: ./services/address
       docker:
         dockerfile: Dockerfile
@@ -15,23 +19,21 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: waddprog/vwanu_auth
-      context: ./services/auth
-      docker:
-        dockerfile: Dockerfile
-      sync:
-        manual:
-          - src: 'src/**/*.ts'
-            dest: .
-    - image: waddprog/vwanu_mailer
-      context: ./services/mailer
-      docker:
-        dockerfile: Dockerfile
-      sync:
-        manual:
-          - src: 'src/**/*.ts'
-            dest: .
-  local:
-    push: false
-  tagPolicy:
-    gitCommit: {}
+    # - image: waddprog/vwn_auth
+    #   context: ./services/auth
+    #   docker:
+    #     dockerfile: Dockerfile
+    #   sync:
+    #     manual:
+    #       - src: 'src/**/*.ts'
+    #         dest: .
+    # - image: waddprog/vwn_mailer
+    #   context: ./services/mailer
+    #   docker:
+    #     dockerfile: Dockerfile
+    #   sync:
+    #     manual:
+    #       - src: 'src/**/*.ts'
+    #         dest: .
+
+

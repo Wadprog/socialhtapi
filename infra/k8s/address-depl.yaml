@@ -14,19 +14,19 @@ spec:
     spec:
       containers:
         - name: address
-          image: waddprog/vwanu_address
+          image: waddprog/vwn_address
           env:
-            - name:JWT_KEY
+            - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
                   name: jwt-secret
-                  key: JWT_KEY          
+                  key: JWT_KEY
           resources:
             limits:
-              memory: "512Mi"
-              cpu: "500m"
+              memory: "64Mi"
+              cpu: "250m"
             requests:
-              memory: "256Mi"
+              memory: "64Mi"
               cpu: "250m"
 ---
 apiVersion: v1
@@ -41,4 +41,3 @@ spec:
       protocol: TCP
       port: 3000
       targetPort: 3000
-      
