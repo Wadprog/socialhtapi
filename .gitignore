@@ -1,3 +1,7 @@
 node_modules
-.DS_Store/
+services/address/node_modules
+services/mailer/node_modules
+services/auth/node_modules
+services/mailer/.DS_Store
+services/auth/.DS_Store
 .DS_Store
