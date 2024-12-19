@@ -14,6 +14,7 @@ spec:
     spec:
       containers:
         - name: nats
+          
           image: nats-streaming:0.17.0
           args:
             [
@@ -29,7 +30,7 @@ spec:
               '2',
               '-SD',
               '-cid',
-              'vwanu',
+              'ticketing',
             ]
           resources:
             limits:

@@ -14,20 +14,22 @@ spec:
     spec:
       containers:
         - name: auth
+          # image: us.gcr.io/storm-wall-444412-i5/auth
           image: waddprog/vwn_auth
+          # imagePullPolicy: Never
           env:
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
                   name: jwt-secret
                   key: JWT_KEY
-          resources:
-            limits:
-              memory: "64Mi"
-              cpu: "250m"
-            requests:
-              memory: "64Mi"
-              cpu: "250m"
+          # resources:
+          #   limits:
+          #     memory: "64Mi"
+          #     cpu: "250m"
+          #   requests:
+          #     memory: "64Mi"
+          #     cpu: "250m"
 
 ---
 apiVersion: v1

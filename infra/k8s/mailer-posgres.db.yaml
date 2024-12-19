@@ -31,6 +31,13 @@ spec:
               cpu: "250m"
           ports:
             - containerPort: 5432
+      #     volumeMounts:
+      #       - name: mailer-posgres-storage
+      #         mountPath: /docker-entrypoint-initdb.d
+      # volumes:
+      #   - name: mailer-posgres-storage
+      #     configMap:
+      #       name: mailer-posgres-config
 ---
 apiVersion: v1
 kind: Service
@@ -44,3 +51,35 @@ spec:
       protocol: TCP
       port: 5432
       targetPort: 5432
+---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: mailer-posgres-config
+# data:
+#   init.sql: |
+#     CREATE TABLE users (
+#       id SERIAL PRIMARY KEY,
+#       first_name VARCHAR(100) NOT NULL,
+#       last_name VARCHAR(100) NOT NULL,
+#       email VARCHAR(100) UNIQUE NOT NULL
+#     );
+
+#     CREATE TABLE templates (
+#       id SERIAL PRIMARY KEY,
+#       body TEXT NOT NULL,
+#       subject VARCHAR(255) NOT NULL,
+#       name VARCHAR(100) UNIQUE NOT NULL,
+#       required_fields JSON NOT NULL 
+#     );
+
+#     CREATE TABLE logs (
+#       id SERIAL PRIMARY KEY,
+#       user_id INT NOT NULL,
+#       template_id INT NOT NULL,
+#       sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+#       FOREIGN KEY (user_id) REFERENCES users(id),
+#       FOREIGN KEY (template_id) REFERENCES templates(id)
+#     );
+
+

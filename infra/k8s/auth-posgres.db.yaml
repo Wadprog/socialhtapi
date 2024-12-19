@@ -16,6 +16,8 @@ spec:
         - name: auth-posgres
           image: 'postgres:12'
           env:
+            - name: POSTGRES_HOST_AUTH_METHOD
+              value: "md5"
             - name: POSTGRES_DB
               value: auth
             - name: POSTGRES_USER
@@ -31,6 +33,13 @@ spec:
               cpu: "250m"
           ports:
             - containerPort: 5432
+          volumeMounts:
+            - name: auth-posgres-storage
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: auth-posgres-storage
+          configMap:
+            name: auth-posgres-config
 ---
 apiVersion: v1
 kind: Service
@@ -44,3 +53,52 @@ spec:
       protocol: TCP
       port: 5432
       targetPort: 5432
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-posgres-config
+data:
+  init.sql: |
+    CREATE TABLE roles (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(100) UNIQUE NOT NULL,
+      description VARCHAR(255),
+      access_level INT NOT NULL
+    );
+    CREATE TABLE users (
+      id SERIAL PRIMARY KEY,
+      first_name VARCHAR(100) NOT NULL,
+      last_name VARCHAR(100) NOT NULL,
+      email VARCHAR(100) UNIQUE NOT NULL,
+      email_verified BOOLEAN NOT NULL DEFAULT FALSE,
+      email_verification_key VARCHAR(50) UNIQUE NULL,
+      email_key_expires TIMESTAMP,
+      password VARCHAR(255) NOT NULL,
+      role_id INT NOT NULL,
+      FOREIGN KEY (role_id) REFERENCES roles(id)
+    );
+    CREATE TABLE auth (
+      user_id INT NOT NULL,
+      password_reset_key VARCHAR(255) UNIQUE,
+      password_reset_expires TIMESTAMP,
+      CHECK (
+        (password_reset_key IS NOT NULL AND password_reset_expires IS NOT NULL) OR 
+        (password_reset_key IS NULL AND password_reset_expires IS NULL)
+      ),
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    );
+    CREATE TABLE logins (
+      user_id INT NOT NULL,
+      date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    );
+    INSERT INTO roles (name, description, access_level) 
+    VALUES 
+      ('admin', 'Admin user', 1),
+      ('user', 'Regular user', 3),
+      ('moderator', 'Moderator user', 2),
+      ('superadmin', 'Super admin user', 0);
+
+
+   
