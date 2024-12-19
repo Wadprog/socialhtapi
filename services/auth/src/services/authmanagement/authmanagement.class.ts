@@ -2,7 +2,7 @@ import { Params } from '@feathersjs/feathers';
 import { BadRequest } from '@feathersjs/errors';
 import { Service, SequelizeServiceOptions } from 'feathers-sequelize';
 
-import { verifyEmail } from './verifyEmail';
+import { verifyEmail } from '../../libs/verifyEmail';
 import { Application } from '../../declarations';
 import resendVerifyEmail from './resend-verify-email';
 
@@ -25,7 +25,7 @@ export class AuthManagement extends Service {
 
   constructor(options: Partial<SequelizeServiceOptions>, private app: Application) {
     super(options);
- 
+
   }
 
   async create(data: any, params: Params) {

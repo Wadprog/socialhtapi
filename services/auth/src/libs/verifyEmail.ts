@@ -3,7 +3,7 @@ import { isNil } from 'lodash';
 import { BadRequest } from '@feathersjs/errors';
 import { Subjects, Publisher, natsWrapper, UserInterface } from '@webvital/micro-common';
 
-import app from '../../app';
+import app from '../app';
 
 interface UserVefiedEmail {
   subject: Subjects.UserCreated;

@@ -2,7 +2,7 @@
 import { Model, Sequelize } from 'sequelize';
 import { UserInterface } from '@webvital/micro-common';
 
-type UserType = Omit<UserInterface, 'password' | 'emailVerificationkey'>
+type UserType = Pick<UserInterface, 'firstName' | 'lastName' | 'email'| 'id'>;
 
 export default (sequelize: Sequelize, DataTypes: any) => {
 

@@ -1,4 +1,5 @@
 export default [
     'password',
-    'emailVerificationkey',
+    'emailKeyExpires',
+    'emailVerificationKey',
 ]

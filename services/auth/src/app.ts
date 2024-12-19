@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import express from '@feathersjs/express';
 import configuration from '@feathersjs/configuration';
-import feathers  from '@feathersjs/feathers';
+import feathers from '@feathersjs/feathers';
 
 /** Custom dependencies */
 import services from './services';
@@ -31,7 +31,7 @@ app.configure(sequelize);
 
 app.configure(authentication);
 app.configure(database);
-app.get('startSequelize')();
+// app.get('startSequelize')();
 app.configure(services);
 app.use(express.notFound());
 app.use(express.errorHandler({ logger: console } as any));

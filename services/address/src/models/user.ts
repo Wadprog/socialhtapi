@@ -1,16 +1,14 @@
 import { Model, Sequelize } from 'sequelize';
 import { UserInterface } from '@webvital/micro-common';
 
-type UserType = Pick<UserInterface, 'id' | 'firstName' | 'lastName'>
+type UserType = Pick<UserInterface, 'id' >
 
 export default (sequelize: Sequelize, DataTypes: any) => {
 
-  class User extends Model<UserType, UserType> {
-    static associate(models: Model[]) {
-      //@ts-ignore
+  class User extends Model<UserType> {
+    static associate(models: any) {
+    
       User.hasMany(models.Address);
-
-
     }
   }
   User.init({
@@ -19,8 +17,6 @@ export default (sequelize: Sequelize, DataTypes: any) => {
       type: DataTypes.INTEGER,
       autoIncrement: true,
     },
-    firstName: { type: DataTypes.STRING, allowNull: false },
-    lastName: { type: DataTypes.STRING, allowNull: false },
 
   }, {
     sequelize,

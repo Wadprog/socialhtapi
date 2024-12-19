@@ -1,4 +1,4 @@
-
+console.log('Starting up... **address-service***');
 /**
  * Entry point for the address service application.
  * 
@@ -8,26 +8,28 @@
  * @module index
  */
 
- /**
-    * Asynchronously runs the server setup and event listener initialization.
-    * 
-    * - Normalizes the port from environment variables or defaults to 3000.
-    * - Creates an HTTP server using the Express app.
-    * - Connects to the NATS streaming server with specified cluster ID, client ID, and URL.
-    * - Initializes the UserRegisteredListener to listen for user registration events.
-    * - Starts the HTTP server and sets up error and listening event handlers.
-    * 
-    * @async
-    * @function run
-    * @throws Will log an error and exit the process with status code 1 if any error occurs during setup.
-    */
+/**
+   * Asynchronously runs the server setup and event listener initialization.
+   * 
+   * - Normalizes the port from environment variables or defaults to 3000.
+   * - Creates an HTTP server using the Express app.
+   * - Connects to the NATS streaming server with specified cluster ID, client ID, and URL.
+   * - Initializes the UserRegisteredListener to listen for user registration events.
+   * - Starts the HTTP server and sets up error and listening event handlers.
+   * 
+   * @async
+   * @function run
+   * @throws Will log an error and exit the process with status code 1 if any error occurs during setup.
+   */
 import app from '../app';
 import { createServer } from 'http';
 import { onError } from './libs/onError';
 import { onListening } from './libs/onListening';
 import { normalizePort } from './libs/normalizePort';
 import { natsWrapper } from '@webvital/micro-common';
-import { UserRegisteredListener } from '../events/listener';
+
+import listeners from '../events';
+
 
 const Logger = console
 
@@ -36,8 +38,7 @@ const run = async () => {
     try {
         const server = createServer(app);
         await natsWrapper.connect('ticketing', 'address-service', 'http://nats-srv:4222')
-        new UserRegisteredListener(natsWrapper.client).listen();
-        console.log('Listening for events');
+        listeners();
         server.listen(port);
         server.on('error', (e) => onError(e, port));
         server.on('listening', onListening(server));

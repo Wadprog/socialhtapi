@@ -2,10 +2,10 @@
 import { Model, Sequelize } from 'sequelize';
 
 interface LogInterface {
-    id?: number;
     userId: number;
     templateId: number;
     sent: boolean;
+    createdAt: Date;
 }
 
 export default (sequelize: Sequelize, DataTypes: any) => {
@@ -18,11 +18,7 @@ export default (sequelize: Sequelize, DataTypes: any) => {
         }
     }
     User.init({
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-        },
+    
         userId: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -39,16 +35,23 @@ export default (sequelize: Sequelize, DataTypes: any) => {
             }
         },
 
+
         sent: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false,
-        }
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: DataTypes.NOW,
+        },
     }, {
         sequelize,
         modelName: 'SentLog',
         tableName: 'sent_logs',
         underscored: true,
+        updatedAt: false,
 
     });
     return User;
