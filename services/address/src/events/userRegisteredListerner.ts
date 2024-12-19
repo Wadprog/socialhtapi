@@ -5,7 +5,7 @@ import app from '../app';
 
 export class UserRegisteredListener extends Listener<UserRegisteredEvent> {
     subject: Subjects.UserRegistered = Subjects.UserRegistered;
-    queueGroupName = 'mailer-service';
+    queueGroupName = 'address-service';
 
     async onMessage(data: UserRegisteredEvent['data'], msg: Message): Promise<void> {
         const sequelize = app.get('sequelizeClient');

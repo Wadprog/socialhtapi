@@ -22,7 +22,7 @@
     "@feathersjs/feathers": "^4.5.12",
     "@feathersjs/socketio": "^4.5.14",
     "@feathersjs/transport-commons": "^5.0.0-pre.20",
-    "@webvital/micro-common": "^1.0.16",
+    "@webvital/micro-common": "^1.0.17",
     "config": "^3.3.12",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",

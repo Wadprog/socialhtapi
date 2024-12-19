@@ -14,6 +14,7 @@ export class UserRegisteredListener extends Listener<UserRegisteredEvent> {
 
     async onMessage(data: UserRegisteredEvent['data'], msg: Message): Promise<void> {
         const sequelize = app.get('sequelizeClient');
+        
 
         await sequelize.models.User.findOrCreate({
             where: {

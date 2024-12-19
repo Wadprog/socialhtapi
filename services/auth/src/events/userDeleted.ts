@@ -1,5 +1,5 @@
-import { Subjects, UserRegisteredEvent, Publisher } from '@webvital/micro-common';
+import { Subjects, UserDeletedEvent, Publisher } from '@webvital/micro-common';
 
-export class UserRegisteredPublisher extends Publisher<UserRegisteredEvent> {
-    subject: Subjects.UserRegistered = Subjects.UserRegistered;
+export class UserDeletedPublisher extends Publisher<UserDeletedEvent> {
+    subject: Subjects.UserDeleted = Subjects.UserDeleted;
 }
