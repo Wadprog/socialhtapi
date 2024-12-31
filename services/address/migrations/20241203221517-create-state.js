@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       country_id: {
-        type: Sequelize.NUMBER,
+        type: Sequelize.INTEGER,
         references: {
           model: 'countries',
           key: 'id',

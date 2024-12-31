@@ -1,3 +1,4 @@
+console.log('Starting up... ****auth-\service ****');
 import app from '../app';
 import { createServer, Server } from 'http';
 import { natsWrapper } from '@webvital/micro-common';

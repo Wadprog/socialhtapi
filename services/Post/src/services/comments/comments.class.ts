@@ -6,13 +6,7 @@ import { BadRequest, GeneralError } from '@feathersjs/errors';
 import { Application } from '../../declarations';
 import common from '../../utils/common';
 
-const {
-  catchAsync,
-  sendResponse,
-  getUploadedFiles,
-  getQueryPagesAndSize,
-  getAcceptableQueryParams,
-} = common;
+const {getUploadedFiles} = common;
 
 // eslint-disable-next-line import/prefer-default-export
 export class Comments extends Service {
@@ -24,7 +18,7 @@ export class Comments extends Service {
     this.app = app;
   }
 
-  async create(data, params: Params) {
+  async create(data:any, params: Params) {
     try {
       const commentData = getUploadedFiles(['postImage', 'postVideo'], data);
 
@@ -40,7 +34,7 @@ export class Comments extends Service {
       );
 
       return Promise.resolve(comment);
-    } catch (error) {
+    } catch (error:any) {
       throw new GeneralError(error.message);
     }
   }

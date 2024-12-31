@@ -1,6 +1,6 @@
 import config from 'config';
 import { Response, Request, NextFunction } from 'express';
-import isValidUrl from './validUrl';
+// import isValidUrl from './validUrl';
 
 const Common = {
   getTokenFromRequest: async (request: Request) => {
@@ -103,14 +103,14 @@ const Common = {
     return { offsetAndLimit, getTotalPages };
   },
 
-  getUploadedFiles: (mediaArray: string[], request): any => {
+  getUploadedFiles: (mediaArray: string[], request:any): any => {
     const data = request;
 
     const documentFiles = request.UploadedMedia;
     data.Media = [];
     if (data.mediaLinks) {
       data.mediaLinks.forEach((link: string) => {
-        if (isValidUrl(link)) {
+        if (true) {
           data.Media.push({
             original: link,
             media: link,
@@ -124,7 +124,7 @@ const Common = {
     if (documentFiles && mediaArray.some((media) => documentFiles[media])) {
       mediaArray.forEach((mediaGroup) => {
         if (documentFiles[mediaGroup]) {
-          documentFiles[mediaGroup].forEach((doc) => {
+          documentFiles[mediaGroup].forEach((doc:any) => {
             if (doc.path)
               data.Media.push({
                 original: doc.path,

@@ -7,6 +7,8 @@ import { Application } from "./declarations";
 const config = require('config');
 const dbSettings = config.get('dbSettings');
 
+// console.log({ dbSettings: config.get('DB_PASSWORD')})
+
 const dbs = {
   host: 'auth-posgres-srv',
   dialect: 'postgres',
@@ -19,16 +21,21 @@ if (process.env.NODE_ENV === 'test') {
   dbs.host = 'localhost';
 }
 
+console.log({ dbs })
 export default function (app: Application): void {
+  let sequelize: any = undefined;
   // @ts-ignore
-  const sequelize = dbSettings.url
-    ? new Sequelize(dbSettings.url)
-    // @ts-ignore
-    : new Sequelize({
-      logging: false,
-      ...dbs,
-      seederStorge: 'sequelize',
-    });
+
+    sequelize = dbSettings.url
+      ? new Sequelize(dbSettings.url)
+      // @ts-ignore
+      : new Sequelize({
+        logging: false,
+        ...dbs,
+        seederStorge: 'sequelize',
+      });
+
+
 
   // handling sequelize query error
   // sequelize.query = async function (...args) {
@@ -49,11 +56,13 @@ export default function (app: Application): void {
   // Set up data relationships
   // Sync to the database
 
-  app.set('sequelizeSync', sequelize.sync({ alter: true }));
+  // app.set('sequelizeSync', sequelize.sync());
 
   // return result;
   // };
   function startSequelize() {
+    if (!sequelize)
+      throw new Error('Sequelize need to be init')
     const { models } = sequelize;
     Object.keys(models).forEach((name) => {
       if ('associate' in models[name]) {

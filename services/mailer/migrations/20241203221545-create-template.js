@@ -3,27 +3,25 @@
 module.exports = {
   async up(queryInterface, DataTypes) {
     await queryInterface.createTable('templates', {
-      id: {
-        type: DataTypes.INTEGER,
+        id: {
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
+        type: DataTypes.INTEGER,
       },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
-        primaryKey: true,
+        unique: true,
       },
       subject: {
         type: DataTypes.STRING,
         allowNull: false,
-        primaryKey: true,
       },
       body: {
         type: DataTypes.TEXT,
         allowNull: false,
-        unique: true,
       },
-      requiredFields: {
+      required_fields: {
         type: DataTypes.JSON,
         allowNull: false
       }

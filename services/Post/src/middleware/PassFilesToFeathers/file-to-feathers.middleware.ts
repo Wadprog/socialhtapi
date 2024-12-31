@@ -1,4 +1,4 @@
-import { Response, NextFunction } from 'express';
+import { Response, NextFunction } from '../../custom_typings/express';
 
 export default (req: any, res: Response, next: NextFunction) => {
   const { method } = req;

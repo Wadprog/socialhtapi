@@ -9,19 +9,26 @@ const config = require('config');
 
 const dbSettings = config.get('dbSettings');
 
-const dbs = { ...dbSettings };
-if (process.env.NODE_ENV === 'test') {
-  dbs.host = 'localhost';
-}
+// const dbs = { ...dbSettings };
+// if (process.env.NODE_ENV === 'test') {
+//   dbs.host = 'localhost';
+// }
+const dbs = {
+  host: 'post-posgres-srv',
+  dialect: 'postgres',
+  database: 'post',
+  username: 'postgres',
+  password: 'postgres'
+};
 
 export default function (app: Application): void {
   const sequelize = dbSettings.url
     ? new Sequelize(dbSettings.url)
     : new Sequelize({
-        logging: false,
-        ...dbs,
-        seederStorge: 'sequelize',
-      });
+      logging: false,
+      ...dbs,
+      seederStorge: 'sequelize',
+    });
 
   // handling sequelize query error
   sequelize.query = async function (...args) {
@@ -42,7 +49,7 @@ export default function (app: Application): void {
     // Set up data relationships
     // Sync to the database
 
-    app.set('sequelizeSync', sequelize.sync({ alter: true }));
+    app.set('sequelizeSync', sequelize.sync());
 
     return result;
   };

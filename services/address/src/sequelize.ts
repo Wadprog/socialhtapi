@@ -41,7 +41,7 @@ export default function (app: Application): void {
 
 
 
-  app.set('sequelizeSync', sequelize.sync({ alter: true }));
+  // app.set('sequelizeSync', sequelize.sync());
 
   // return result;
   // };

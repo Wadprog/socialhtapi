@@ -1,14 +1,16 @@
+import { HookContext } from "@feathersjs/feathers";
+
 export default function (options: any = {}) {
   // eslint-disable-next-line no-param-reassign
   options.models = options.models || [];
 
-  return async (context) => {
+  return async (context:HookContext) => {
     const sequelize = context.params.sequelize || {};
     const include = sequelize.include || [];
 
     //	Reasign in case we created these properties
     sequelize.include = include.concat(
-      options.models.map((model) => {
+      options.models.map((model:any) => {
         const newModel = { ...model };
 
         newModel.model = context.app.services[model.model].Model;

@@ -17,13 +17,12 @@ export default (sequelize: Sequelize, DataTypes: any) => {
   }
   AddressType.init(
     {
-      id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+     id: {
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
+        type: DataTypes.INTEGER,
       },
-
       description: {
         type: DataTypes.STRING,
         unique: true,

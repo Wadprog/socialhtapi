@@ -1,8 +1,8 @@
+console.log('Starting mailer  service');
 import app from '../app';
 import { createServer, Server } from 'http';
 import { natsWrapper } from '@webvital/micro-common';
-import { UserRegisteredListener } from '../events/userRegisteredListerner';
-import { exec } from 'child_process';
+import initializeListeners from '../events';
 
 // // import database from '../../models';
 const Logger = console;
@@ -69,25 +69,11 @@ function onError(error: any): void {
 
 // database.sequelize.sync({ logging: false, alter: true }).then(() => {
 const run = async () => {
-    exec('npx sequelize-cli db:migrate', (err, stdout, stderr) => {
-        if (err) {
-            Logger.error(err);
-            return;
-        }
-        Logger.info(stdout);
-    });
 
-    exec('npx sequelize-cli db:seed:all', (err, stdout, stderr) => {
-        if (err) {
-            Logger.error(err);
-            return;
-        }
-        Logger.info(stdout);
-    });
 
     try {
         await natsWrapper.connect('ticketing', 'mailer-service', 'http://nats-srv:4222');
-        new UserRegisteredListener(natsWrapper.client).listen();
+        initializeListeners();
 
         const server = createServer(app);
         server.listen(port);

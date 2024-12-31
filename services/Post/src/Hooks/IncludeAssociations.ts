@@ -9,8 +9,8 @@ type Assoc = {
   as?: any;
 };
 
-const associateModels = (include, context) => {
-  const associations = [];
+const associateModels = (include:any, context:any) => {
+  const associations:any[] = [];
 
   (Array.isArray(include) ? include : [include]).forEach((assoc: any) => {
     const { as: associate, model, include: subInclude, ...rest } = assoc;
@@ -39,7 +39,7 @@ const associateModels = (include, context) => {
   return associations;
 };
 
-export default (options): any =>
+export default (options:any): any =>
   async (context: HookContext) => {
     if (!options.include) throw new Error(`Include is not defined`);
 
@@ -54,7 +54,7 @@ export default (options): any =>
         // console.log(context.params.sequelize);
       }
       return context;
-    } catch (err) {
+    } catch (err:any) {
       throw new Error(err);
     }
   };

@@ -1,5 +1,5 @@
 import { StatusCodes, ReasonPhrases } from 'http-status-codes'
-import { Response, Request, NextFunction } from 'express'
+import { Response, Request, NextFunction } from '../../custom_typings/express'
 
 export default function (req: Request, res: Response, next: NextFunction) {
   // console.log(req.params.id.toString() === (<any>req.user).id.toString())

@@ -34,6 +34,7 @@ app.configure(sequelize);
 app.configure(database);
 app.get('startSequelize')();
 app.configure(services);
+
 app.use(express.notFound());
 app.use(express.errorHandler({ logger: console } as any));
 export default app;

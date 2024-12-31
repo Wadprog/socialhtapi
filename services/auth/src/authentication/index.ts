@@ -1,15 +1,12 @@
-/* eslint-disable class-methods-use-this */
-/* eslint-disable max-classes-per-file */
-/* eslint-disable no-unused-vars */
 import { ServiceAddons } from '@feathersjs/feathers';
-import { AuthenticationService, JWTStrategy } from '@feathersjs/authentication';
-
-import { LocalStrategy } from '@feathersjs/authentication-local';
 import * as local from '@feathersjs/authentication-local';
+import { LocalStrategy } from '@feathersjs/authentication-local';
+import { AuthenticationService, JWTStrategy } from '@feathersjs/authentication';
 
 // import { issueRefreshToken } from '@jackywxd/feathers-refresh-token';
 import { Application } from '../declarations.d';
-import { AnonymousStrategy } from './strategies';
+import protectedkey from '../libs/protectedkey';
+
 
 const { protect } = local.hooks;
 declare module '../declarations.d' {
@@ -19,13 +16,16 @@ declare module '../declarations.d' {
   }
 }
 
+
+
 export default function (app: Application): void {
+
   const authentication = new AuthenticationService(app);
 
-  authentication.register('jwt', new JWTStrategy());
+  const jwtStrategy = new JWTStrategy();
+  authentication.register('jwt', jwtStrategy);
   authentication.register('local', new LocalStrategy());
-  authentication.register('anonymous', new AnonymousStrategy());
-  // authentication.register('facebook', new FacebookStrategy());
+
   app.use('/authentication', authentication);
   const service = app.service('authentication');
 
@@ -33,23 +33,7 @@ export default function (app: Application): void {
   service.hooks({
     after: {
       all: [
-        protect(
-          ...[
-            'password',
-            'verifyToken',
-            'resetToken',
-            'resetShortToken',
-            'resetExpires',
-            'verifyShortToken',
-            'activationKey',
-            'resetPasswordKey',
-            'isVerified',
-            'verifyToken',
-            'verifyExpires',
-            'verifyChanges',
-            'activationKey',
-          ]
-        ),
+        protect(...protectedkey),
       ],
       // create: [issueRefreshToken()],
     },

@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       state_id: {
-        type: Sequelize.NUMBER,
+        type: Sequelize.INTEGER,
         references: {
           model: 'states',
           key: 'id',

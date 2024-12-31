@@ -2,80 +2,39 @@ import commonHooks from 'feathers-hooks-common';
 import * as local from '@feathersjs/authentication-local';
 import * as feathersAuthentication from '@feathersjs/authentication';
 
-import * as schema from '../../schema/user';
 import isSelf from '../../Hooks/isSelf.hook';
-import AutoLogin from '../../Hooks/AutoLoginHooks';
-import validateResource from '../../middleware/validateResource';
 import saveProfilePicture from '../../Hooks/SaveProfilePictures.hooks';
 import MediaStringToMediaObject from '../../Hooks/ProfileCoverToObject';
-import filesToBody from '../../middleware/PassFilesToFeathers/feathers-to-data.middleware';
-
 import {
-  SaveAddress,
-  AssignRole,
   AddVisitor,
   GetUser,
-  SendWelcomeMail /* SendEmail */,
-  AddworkPlace,
-} from './hook';
-import SaveAndAttachInterests from '../../Hooks/SaveAndAttachInterest';
 
-const { hashPassword, protect } = local.hooks;
+} from './hook';
+
+// import SaveAndAttachInterests from '../../Hooks/SaveAndAttachInterest';
+
+const { protect } = local.hooks;
 const { authenticate } = feathersAuthentication.hooks;
 
-const protectkeys = protect(
-  ...[
-    'password',
-    'verifyToken',
-    'resetToken',
-    'resetShortToken',
-    'resetExpires',
-    'verifyShortToken',
-    'activationKey',
-    'resetPasswordKey',
-    'verifyExpires',
-    'search_vector',
-  ]
-);
+const protectkeys = protect(...['search_vector']);
+
 export default {
   before: {
-    find: [authenticate('jwt'), GetUser],
-    get: [authenticate('jwt'), GetUser],
-    create: [
-      AssignRole('member'),
-      validateResource(schema.createUserSchema),
-      saveProfilePicture(['profilePicture', 'coverPicture']),
-      filesToBody,
-      hashPassword('password'),
-    ],
-    update: [commonHooks.disallow('external')],
+    // find: [authenticate('jwt')],
+    // get: [authenticate('jwt')],
+    create: commonHooks.disallow(),
+    update: commonHooks.disallow(),
     patch: [
-      commonHooks.iff(
-        commonHooks.isProvider('external'),
-        commonHooks.preventChanges(
-          true,
-
-          ...[
-            'email',
-            'isVerified',
-            'verifyToken',
-            'verifyShortToken',
-            'verifyExpires',
-            'verifyChanges',
-            'resetToken',
-            'resetShortToken',
-            'resetExpires',
-            'activationKey',
-            'resetPasswordKey',
-            'password',
-          ]
-        ),
-
-        authenticate('jwt'),
-        isSelf
-      ),
-      hashPassword('password'),
-      saveProfilePicture(['profilePicture', 'coverPicture']),
+      // commonHooks.iff(
+      //   commonHooks.isProvider('external'),
+      //   commonHooks.preventChanges(
+      //     true,
+      //     ...['email']
+      //   ),
+      //   authenticate('jwt'),
+      //   isSelf
+      // ),
+      // saveProfilePicture(['profilePicture', 'coverPicture']),
     ],
     remove: [authenticate('jwt'), isSelf],
   },
@@ -83,30 +42,18 @@ export default {
   after: {
     all: [MediaStringToMediaObject(['profilePicture', 'coverPicture'])],
     find: [protectkeys],
-    get: [AddVisitor, protectkeys],
-    create: [
-      SaveAddress,
-      AutoLogin,
-      AddworkPlace,
-      // IncludeAddress,
-      SaveAndAttachInterests({
-        entityName: 'User',
-        relationTableName: 'User_Interest',
-        foreignKey: 'UserId',
-      }),
-      SendWelcomeMail,
-      protectkeys,
-    ],
-    patch: [
-      SaveAddress,
-      AddworkPlace,
-      SaveAndAttachInterests({
-        entityName: 'User',
-        relationTableName: 'User_Interest',
-        foreignKey: 'UserId',
-      }),
-      protectkeys,
-    ],
+    // get: [AddVisitor, protectkeys],
+    patch: [protectkeys],
     remove: [protectkeys],
   },
+  error: {
+    all: [
+      (context: any) => {
+        if (context.error) {
+          console.log('Error in users.hooks.ts');
+          console.log(context.error);
+        }
+      }
+    ],
+  }
 };

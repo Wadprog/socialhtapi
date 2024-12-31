@@ -2,11 +2,6 @@ const fs = require('fs');
 const path = require('path');
 
 
-const query = fs.readFileSync(
-  path.resolve(__dirname, '../queries', 'upsertAppUsers.sql'),
-  'utf-8'
-);
-
 const errorCodes = require('../data/errorCodes');
 
 

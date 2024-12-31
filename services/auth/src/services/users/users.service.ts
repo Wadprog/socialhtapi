@@ -25,5 +25,4 @@ export default function (app: Application): void {
   app.use('/users', new Users(options, app));
   const service = app.service('users');
   service.hooks(hooks);
-  // service.hooks(hooks);
 }

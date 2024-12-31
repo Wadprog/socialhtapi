@@ -1,41 +1,49 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-shadow */
-/* eslint-disable import/no-import-module-exports */
-
 import { Model } from 'sequelize';
 
 export interface KoremInterface {
-  id: string;
-  entityId: string;
+  userId: number;
+  postId: number;
+  createdAt: Date;
 }
 export default (sequelize: any, DataTypes: any) => {
-  class Korem extends Model<KoremInterface> implements KoremInterface {
-    id: string;
-
-    entityId: string;
+  class Korem extends Model<KoremInterface> {
 
     static associate(models: any): void {
       Korem.belongsTo(models.User);
-      Korem.belongsTo(models.Service);
+      Korem.belongsTo(models.Post);
     }
   }
   Korem.init(
     {
-      id: {
-        type: DataTypes.UUID,
+      userId: {
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull: false,
+        references: {
+          model: 'users',
+          key: 'id',
+        },
+      },
+      postId: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        references: {
+          model: 'posts',
+          key: 'id',
+        },
       },
 
-      entityId: {
-        type: DataTypes.UUID,
+      createdAt: {
+        type: DataTypes.DATE,
         allowNull: false,
+        defaultValue: DataTypes.NOW,
       },
     },
     {
       sequelize,
       modelName: 'Korem',
+      tableName: 'korems',
+      underscored: true,
+      updatedAt: false,
     }
   );
   return Korem;

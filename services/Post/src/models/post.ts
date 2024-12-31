@@ -7,77 +7,38 @@ export interface PostInterface {
   postText: string;
   privacyType: string;
   locked: boolean;
-  originalType: string;
 }
 export default (sequelize: any, DataTypes: any) => {
-  class Post extends Model<PostInterface> implements PostInterface {
-    id: string;
+  class Post extends Model<PostInterface> {
 
-    postText: string;
-
-    privacyType: string;
-
-    locked: boolean;
-
-    originalType: string;
 
     static associate(models: any): void {
       Post.belongsTo(models.User);
       Post.belongsTo(models.Community, { onDelete: 'CASCADE' });
-      Post.belongsToMany(models.Media, {
-        through: 'Post_Media',
-      });
+      Post.hasMany(models.Media, {
+        onDelete: 'CASCADE',
+        foreignKey: 'post_id',
 
-      Post.belongsTo(models.User, { as: 'wall' });
-
-      Post.belongsTo(models.Post, {
-        foreignKey: 'originalId',
-        constraints: false,
-        scope: {
-          originalType: 'Post',
-        },
       });
-      Post.belongsTo(models.Discussion, {
-        foreignKey: 'originalId',
-        constraints: false,
-      });
-
-      Post.belongsTo(models.Blog, {
-        foreignKey: 'originalId',
-        constraints: false,
-      });
-
-      // Post.belongsTo(models.Media, {
-      //   as: 'Media-comment',
-      //   foreignKey: 'mediaId',
-      // });
       Post.hasMany(models.Post, { as: 'Comments' });
-      Post.hasMany(models.Reaction, {
-        foreignKey: 'entityId',
+      Post.hasMany(models.Korem, {
+        foreignKey: 'post_id',
         constraints: false,
-        scope: {
-          entityType: 'Post',
-        },
       });
     }
   }
   Post.init(
     {
       id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
+        autoIncrement: true,
         allowNull: false,
       },
 
       postText: {
         type: DataTypes.TEXT,
         allowNull: true,
-      },
-
-      originalType: {
-        type: DataTypes.STRING,
-        defaultValue: 'public',
       },
       privacyType: {
         type: DataTypes.STRING,
@@ -99,6 +60,10 @@ export default (sequelize: any, DataTypes: any) => {
       // },
       sequelize,
       modelName: 'Post',
+      tableName: 'posts',
+      underscored: true,
+      updatedAt: false,
+      createdAt: false,
     }
   );
   return Post;

@@ -9,4 +9,4 @@ RUN apk add --no-cache bash
 COPY . .
 
 
-CMD ["npm","run","dev"]
+CMD ["npm","run","start"]

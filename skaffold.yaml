@@ -6,8 +6,15 @@ deploy:
       - ./infra/k8s/*
       - ./infra/k8s-dev/*
 build:
+  local:
+    push: false
+  # googleCloudBuild:
+  #   projectId: storm-wall-444412-i5
+  tagPolicy:
+    gitCommit: {}
   artifacts:
-    - image: waddProg/vwanu_address
+    # - image: us.gcr.io/storm-wall-444412-i5/address
+    - image: waddprog/vwn_address
       context: ./services/address
       docker:
         dockerfile: Dockerfile
@@ -15,7 +22,8 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: waddprog/vwanu_auth
+    # - image: us.gcr.io/storm-wall-444412-i5/auth
+    - image: waddprog/vwn_auth
       context: ./services/auth
       docker:
         dockerfile: Dockerfile
@@ -23,7 +31,8 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: waddprog/vwanu_mailer
+    # - image: us.gcr.io/storm-wall-444412-i5/mailer
+    - image: waddprog/vwn_mailer
       context: ./services/mailer
       docker:
         dockerfile: Dockerfile
@@ -31,7 +40,21 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-  local:
-    push: false
-  tagPolicy:
-    gitCommit: {}
+    - image: waddprog/vwn_connection
+      context: ./services/conection
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: waddprog/vwn_post
+      context: ./services/post
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+
+
