@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: post-db-migration
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      containers:
+        - name: post-db-migration
+          image: waddprog/vwn_post
+          # command: ["npx", "sequelize-cli", "db:migrate"]
+          command: ["sh","-c"]
+          args: 
+            - >
+              echo "Database is ready. Running migrations...";
+              node node_modules/.bin/sequelize db:migrate &&
+              echo "Migration completed starting seeding" &&
+              node node_modules/.bin/sequelize db:seed:all &&
+              echo "Seeding completed"
+          env:
+            - name: NODE_ENV
+              value: "development"
+            - name: DB_HOST
+              value: "post-posgres-srv" 
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: "post"
+            - name: DB_USER
+              value: "postgres"
+            - name: DB_PASSWORD
+              value: "postgres"
+          imagePullPolicy: Never
+      restartPolicy: Never

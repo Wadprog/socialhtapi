@@ -13,13 +13,13 @@ SELECT
 json_agg(
   json_build_object(
     'id', "U"."id",
-    'firstName', "U"."firstName",
-    'lastName', "U"."lastName",
-    'profilePicture', "U"."profilePicture",
+    'firstName', "U"."first_name",
+    'lastName', "U"."last_name",
+    'profilePicture', "U"."profile_picture",
     'email', "U"."email",
-    'amountOfFollower',"U"."amountOfFollower",
-    'amountOfFollowing',"U"."amountOfFollowing",
-    'amountOfFriend',"U"."amountOfFriend",
+    'amountOfFollower',"U"."amount_of_follower",
+    'amountOfFollowing',"U"."amount_of_following",
+    'amountOfFriend',"U"."amount_of_friend",
     'isFriend', "U"."isFriend",
     'iFollow',"U"."iFollow"
 --     'IsAFollower',"IsAFollower"

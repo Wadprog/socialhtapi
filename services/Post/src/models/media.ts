@@ -1,12 +1,9 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable import/no-import-module-exports */
-
 import { Model } from 'sequelize';
-import config from 'config';
+// import config from 'config';
 
-const tinySize = config.get('tinySize');
-const smallSize = config.get('smallSize');
-const mediumSize = config.get('mediumSize');
+// const tinySize = config.get('tinySize');
+// const smallSize = config.get('smallSize');
+// const mediumSize = config.get('mediumSize');
 
 export interface MediaInterface {
   id: number;
@@ -17,27 +14,15 @@ export interface MediaInterface {
   tiny: string;
 }
 export default (sequelize: any, DataTypes: any) => {
-  class Media extends Model<MediaInterface> implements MediaInterface {
-    id: number;
-
-    original: string;
-
-    large: string | undefined;
-
-    medium: string | undefined;
-
-    small: string | undefined;
-
-    tiny: string | undefined;
+  class Media extends Model<MediaInterface> {
 
     static associate(models: any): void {
       Media.belongsTo(models.User);
       Media.belongsToMany(models.Post, {
-        through: 'Post_Media',
+        through: 'post_medias',
+        foreignKey: 'media_id',
+        as: 'media',
       });
-      // Media.hasMany(models.Post, {
-      //   onDelete: 'CASCADE',
-      // });
     }
   }
   Media.init(
@@ -70,27 +55,31 @@ export default (sequelize: any, DataTypes: any) => {
     },
 
     {
-      hooks: {
-        beforeSave: (record) => {
-          const { tiny, small, medium, original } = record;
+      // hooks: {
+      //   beforeSave: (record) => {
+      //     const { tiny, small, medium, original } = record;
 
-          record.medium =
-            medium !== undefined
-              ? medium
-              : original.replace(/\upload\//g, `upload/${mediumSize}/`);
-          record.small =
-            small !== undefined
-              ? small
-              : original.replace(/\upload\//g, `upload/${smallSize}/`);
-          record.tiny =
-            tiny !== undefined
-              ? tiny
-              : original.replace(/\upload\//g, `upload/${tinySize}/`);
-        },
-      },
+      //     record.medium =
+      //       medium !== undefined
+      //         ? medium
+      //         : original.replace(/\upload\//g, `upload/${mediumSize}/`);
+      //     record.small =
+      //       small !== undefined
+      //         ? small
+      //         : original.replace(/\upload\//g, `upload/${smallSize}/`);
+      //     record.tiny =
+      //       tiny !== undefined
+      //         ? tiny
+      //         : original.replace(/\upload\//g, `upload/${tinySize}/`);
+      //   },
+      // },
 
       sequelize,
       modelName: 'Media',
+      tableName: 'medias',
+      underscored: true,
+      updatedAt: false,
+      createdAt: false,
     }
   );
   return Media;

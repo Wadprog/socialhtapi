@@ -1,5 +1,5 @@
 import { Application } from '../declarations';
-import mostBeActiveMiddleware from './mostBeActive.middleware';
+// import mostBeActiveMiddleware from './mostBeActive.middleware';
 
 // eslint-disable-next-line no-unused-vars
 export default function (app: Application): void {
@@ -16,5 +16,5 @@ export default function (app: Application): void {
   //     console.log('Request Headers:', req.path);
   //     next();
   //   });
-  app.configure(mostBeActiveMiddleware);
+  // app.configure(mostBeActiveMiddleware);
 }

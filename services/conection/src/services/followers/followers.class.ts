@@ -4,8 +4,7 @@
 import { Params, Id } from '@feathersjs/feathers';
 import { Service, SequelizeServiceOptions } from 'feathers-sequelize';
 import { BadRequest, GeneralError } from '@feathersjs/errors';
-// import { QueryTypes } from 'sequelize';
-/** Local dependencies */
+
 import { Application } from '../../declarations';
 
 /**
@@ -46,32 +45,32 @@ export class Followers extends Service {
    * @param {params} params - The metadata sent
    * @returns - response from the api
    */
-  async remove(id: Id, params: Params) {
-    const { User_Follower } = this.app.get('sequelizeClient').models;
+  // async remove(id: Id, params: Params) {
+  //   const { User_Follower } = this.app.get('sequelizeClient').models;
 
-    try {
-      const res = await User_Follower.destroy({
-        where: { UserId: id, FollowerId: params.User.id },
-      });
-      if (res === 0)
-        throw new BadRequest(`You are not following ${params.User.id}`);
-      return Promise.resolve({ message: 'Unfollowed successfully' });
-    } catch (error) {
-      if (error.type === 'FeathersError') throw new BadRequest(error);
-      else throw new GeneralError('Could not unfollow');
-    }
-    // try {
-    //   const sequelize = this.app.get('sequelizeClient');
+  //   try {
+  //     const res = await User_Follower.destroy({
+  //       where: { UserId: id, FollowerId: params.User.id },
+  //     });
+  //     if (res === 0)
+  //       throw new BadRequest(`You are not following ${params.User.id}`);
+  //     return Promise.resolve({ message: 'Unfollowed successfully' });
+  //   } catch (error) {
+  //     if (error.type === 'FeathersError') throw new BadRequest(error);
+  //     else throw new GeneralError('Could not unfollow');
+  //   }
+  //   // try {
+  //   //   const sequelize = this.app.get('sequelizeClient');
 
-    //   await sequelize.query(
-    //     `call proc_remove_follower( '${id}', '${params.User.id}')`
-    //   );
+  //   //   await sequelize.query(
+  //   //     `call proc_remove_follower( '${id}', '${params.User.id}')`
+  //   //   );
 
-    //   return Promise.resolve({ message: 'Unfollowed successfully' });
-    // } catch (err) {
-    //   console.log(err);
-    //   throw new BadRequest('Could not unfollow');
-  }
+  //   //   return Promise.resolve({ message: 'Unfollowed successfully' });
+  //   // } catch (err) {
+  //   //   console.log(err);
+  //   //   throw new BadRequest('Could not unfollow');
+  // }
   // },
 
   // async find(params: Params): Promise<{

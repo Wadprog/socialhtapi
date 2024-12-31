@@ -1,7 +1,8 @@
 import { HookContext } from '@feathersjs/feathers';
 import isNill from 'lodash/isNil';
 
-import UrlToMedia from '../utils/UrlToMedia';
+// import UrlToMedia from '../utils/UrlToMedia';
+const UrlToMedia = (url: string) => url;
 
 export default (fields: string[]) =>
   (context: HookContext): HookContext => {
@@ -13,7 +14,7 @@ export default (fields: string[]) =>
     //   console.log(context.result);
     // console.log(Array.isArray(context.result));
     if (context.result.data)
-      context.result.data?.forEach((entity, idx) => {
+      context.result.data?.forEach((entity:any, idx:string) => {
         fields.forEach((field) => {
           if (entity[field]) {
             context.result.data[idx][field] = UrlToMedia(entity[field]);

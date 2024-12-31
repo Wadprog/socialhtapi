@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: connection-posgres-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: connection-posgres
+  template:
+    metadata:
+      labels:
+        app: connection-posgres
+    spec:
+      containers:
+        - name: connection-posgres
+          image: 'postgres:12'
+          env:
+            - name: POSTGRES_DB
+              value: connection
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+          ports:
+            - containerPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: connection-posgres-srv
+spec:
+  selector:
+    app: connection-posgres
+  ports:
+    - name: db
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+   

@@ -1,17 +1,16 @@
 /* eslint-disable import/no-import-module-exports */
 import { Model } from 'sequelize';
-import { ErrorCodeInterface } from '../schema/errorCode.schema';
+
+
+interface ErrorCodeInterface{
+  error_code:string;
+  error_message:string;
+  description:string;
+}
 
 export default (sequelize: any, DataTypes: any) => {
-  class ErroCode extends Model<ErrorCodeInterface> implements ErrorCodeInterface {
-   error_code: string
-   error_message :string
-   description:string
+  class ErroCode extends Model<ErrorCodeInterface> {}
 
-    static associate(models: any): void {
-      
-    }
-  }
   ErroCode.init(
     {
       error_code: {
@@ -33,7 +32,7 @@ export default (sequelize: any, DataTypes: any) => {
     {
       
       sequelize,
-      modelName: 'ErroCodes',
+      modelName: 'ErroCode',
       tableName:'error_codes',
       underscored:true,
       timestamps:false,

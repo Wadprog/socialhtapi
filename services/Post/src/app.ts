@@ -1,18 +1,15 @@
 /* eslint-disable no-unused-vars */
 import cors from 'cors';
-import helmet from 'helmet';
+// import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import express from '@feathersjs/express';
-import socketio from '@feathersjs/socketio';
-import methodOverride from 'method-override';
 import configuration from '@feathersjs/configuration';
 import { Request, Response, NextFunction } from 'express';
+
 import feathers, {
   HookContext as FeathersHookContext,
 } from '@feathersjs/feathers';
-
-/** Custom dependencies */
 
 import database from './models';
 import services from './services';
@@ -20,7 +17,7 @@ import sequelize from './sequelize';
 import middleware from './middleware';
 import common from './utils/common';
 import { Application } from './declarations';
-import RequestBody from './middleware/RequestBody';
+import authentication from './authentication';
 
 dotenv.config();
 const { sendErrorResponse } = common;
@@ -30,24 +27,24 @@ app.configure(configuration());
 app.use(express.json());
 
 app.use(cors());
-app.use(helmet());
-app.use(RequestBody);
+// app.use(helmet());
+
 app.use(morgan('dev', { skip: (req, res) => process.env.NODE_ENV === 'test' }));
-app.use(methodOverride('_method'));
 app.use(express.urlencoded({ extended: true }));
 
 app.configure(express.rest());
-app.configure(socketio());
+
 app.configure(sequelize);
 
 app.configure(middleware);
+// app.configure(authentication);
 app.configure(database);
 app.get('startSequelize')();
 app.configure(services);
 app.use(express.notFound());
 app.use(express.errorHandler({ logger: console } as any));
 
-// eslint-disable-next-line prefer-arrow-callback
+// @ts-ignore
 app.use(function (
   err: Error | any,
   req: Request,

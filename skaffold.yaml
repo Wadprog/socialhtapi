@@ -40,5 +40,21 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
+    - image: waddprog/vwn_connection
+      context: ./services/conection
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: waddprog/vwn_post
+      context: ./services/post
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
 
 

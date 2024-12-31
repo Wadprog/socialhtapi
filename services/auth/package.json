@@ -1,11 +1,18 @@
 {
-  "name": "vwanu_address",
+  "name": "vwanu_auth",
   "version": "1.0.0",
-  "description": "manage addresses for the vwanu api ",
+  "description": "manage authentication for the vwanu api ",
   "main": "index.js",
   "scripts": {
-    "test": "test ",
+    "test": "jest --watchAll --no-cache",
     "start": "nodemon"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "./.jest/setup.ts"
+    ]
   },
   "keywords": [
     "map",
@@ -37,18 +44,26 @@
     "pg": "^8.13.1",
     "sequelize": "^6.37.5",
     "sequelize-cli": "^6.6.2",
-    "typescript": "^5.7.2",
+    "typescript": "^4.7.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@testcontainers/postgresql": "^10.16.0",
     "@types/cors": "^2.8.17",
     "@types/dotenv": "^8.2.3",
     "@types/express": "^5.0.0",
     "@types/helmet": "^4.0.0",
+    "@types/jest": "^27.4.0",
     "@types/lodash": "^4.17.13",
     "@types/method-override": "^0.0.32",
     "@types/morgan": "^1.9.9",
+    "@types/supertest": "^2.0.11",
+    "http-status-codes": "^2.2.0",
+    "jest": "^27.5.1",
     "nodemon": "^3.1.7",
+    "supertest": "^6.2.2",
+    "testcontainers": "^10.16.0",
+    "ts-jest": "^27.1.5",
     "ts-node": "^10.9.2"
   }
 }

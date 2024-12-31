@@ -1,45 +1,32 @@
-// import express from '@feathersjs/express';
-import { ExpressPeerServer } from 'peer';
-
-/** Local requirements * */
+import { natsWrapper } from '@webvital/micro-common';
 import app from '../app';
-import Logger from '../utils/logger';
-import {
-  ApiConfigurationType,
-  API_CONFIG_SCHEMA,
-} from '../schema/serverConf.schema';
+
+// import {
+//   ApiConfigurationType,
+//   API_CONFIG_SCHEMA,
+// } from '../schema/serverConf.schema';
 import helper from './sever_helper';
+import listeners from '../events';
 
-const API_CONFIGURATION: ApiConfigurationType = app.get('API_CONFIGURATION');
+// const API_CONFIGURATION: ApiConfigurationType = app.get('API_CONFIGURATION');
 
-let port = null;
-if (API_CONFIG_SCHEMA.parse(API_CONFIGURATION)) {
-  port = helper.normalizePort(API_CONFIGURATION.port);
-
-  // Configure a middleware for 404s and the error handler
+const port = 3000;
+// if (API_CONFIG_SCHEMA.parse(API_CONFIGURATION)) {
+// port = helper.normalizePort(3000)//API_CONFIGURATION.port);
 
 
-  const server = app.listen(port);
-  const PeerJsServer = ExpressPeerServer(server);
-  PeerJsServer.on('connection', () => {
-    Logger.info('new client connection connected');
-  });
 
-  app.use('/peerjs', PeerJsServer);
+const server = app.listen(port);
 
-  server.on('error', (err) => {
-    helper.onError(err, API_CONFIGURATION.port);
-  });
-  server.on('listening', () => {
-    helper.envConfigurationCheck();
-    app
-      .get('sequelizeSync')
-      .then(() => {
-        helper.onListening(server, API_CONFIGURATION.host);
-      })
-      .catch((error) => {
-        Logger.error(error);
-        process.exit(1);
-      });
-  });
-}
+
+server.on('error', (err) => {
+  helper.onError(err, /*API_CONFIGURATION.port*/ 3000);
+});
+
+server.on('listening', async () => {
+  // helper.envConfigurationCheck();
+  await natsWrapper.connect('ticketing', 'connection-service', 'http://nats-srv:4222')
+  listeners();
+  console.log(`Server listening on port ${port}`);
+});
+// }

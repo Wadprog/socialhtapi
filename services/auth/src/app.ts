@@ -15,7 +15,6 @@ import authentication from './authentication';
 
 dotenv.config();
 
-
 const app = express(feathers());
 app.configure(configuration());
 app.use(express.json());

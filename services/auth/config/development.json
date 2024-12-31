@@ -1,6 +1,9 @@
 {
   "dbSettings": {
     "dialect": "postgres",
+    "host": "localhost",
+    "port": 9482,
+
     "pool": { "idle": 20000, "acquire": 600000 }
   }
 }

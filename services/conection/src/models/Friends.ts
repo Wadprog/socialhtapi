@@ -1,53 +1,51 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable import/no-import-module-exports */
-
 import { Model } from 'sequelize';
 
 export interface FriendInterface {
-  id: string;
-  RequesterId: string;
-  UserId: string;
-  accepted: boolean;
+  userOneId: number;
+  userTwoId: number;
+  createdAt: Date;
 }
 export default (sequelize: any, DataTypes: any) => {
-  class Friend extends Model<FriendInterface> implements FriendInterface {
-    id: string;
-
-    RequesterId: string;
-
-    UserId: string;
-
-    accepted: boolean;
+  class Friend extends Model<FriendInterface> {
 
     static associate(models: any): void {
-      Friend.hasOne(models.User, { as: 'Requester' });
-      Friend.hasOne(models.User, { as: 'User' });
+      Friend.belongsTo(models.User, { foreignKey: 'user_one_id' });
+      Friend.belongsTo(models.User, { foreignKey: 'user_two_id' });
     }
   }
+  
   Friend.init(
     {
-      id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        // autoIncrement: true,
-      },
-      RequesterId: {
+
+      userOneId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
+        references: {
+          model: 'users',
+          key: 'id',
+        },
       },
-      UserId: {
+      userTwoId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
+        references: {
+          model: 'users',
+          key: 'id',
+        },
       },
-      accepted: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
+      createdAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
       },
     },
 
     {
       sequelize,
       modelName: 'Friend',
+      tableName: 'friends',
+      underscored: true,
+      updatedAt: false,
     }
   );
   return Friend;
