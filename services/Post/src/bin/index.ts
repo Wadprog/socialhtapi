@@ -36,9 +36,15 @@ const port = 3000;
 // if (API_CONFIG_SCHEMA.parse(API_CONFIGURATION)) {
 // port = helper.normalizePort(3000)//API_CONFIGURATION.port);
 
+app.initialize({
+  host: 'post-posgres-srv',
+  dialect: 'postgres',
+  database: 'post',
+  username: 'postgres',
+  password: 'postgres'
+})
 
-
-const server = app.listen(port);
+const server = app.server.listen(port);
 
 
 server.on('error', (err) => {

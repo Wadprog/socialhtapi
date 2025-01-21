@@ -1,9 +1,13 @@
-import app from '../src/app';
+import { jest } from '@jest/globals';
 
-export default async function (globalConfig, projectConfig) {
-  const sequelize = app.get('sequelizeClient');
-  // await sequelize.sync();
-  console.log('Sequelize synced!');
-
-  globalThis.__SEQUELIZE__ = sequelize;
-}
+jest.mock('@webvital/micro-common', () => {
+    const actual = jest.requireActual('@webvital/micro-common');
+    return {
+        __esModule: true,
+        //@ts-expect-error
+        ...actual,
+        natsWrapper: {
+            client: { publish: jest.fn() },
+        },
+    };
+});

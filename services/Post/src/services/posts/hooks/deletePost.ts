@@ -13,12 +13,12 @@ export default async (context: HookContext): Promise<HookContext> => {
   const { params, id, service } = context;
   //@ts-ignore
   const entity = await getEntityById(service, id);
-  if (entity.UserId === params.User.id)
+  if (entity.UserId === params.user.id)
     return context;
   if (!entity.PostId)
     throw new BadRequest('You have no access right to delete this post');
   const parentPost = await getEntityById(service, entity.PostId);
-  if (parentPost.UserId === params.User.id) return context;
+  if (parentPost.UserId === params.user.id) return context;
   throw new BadRequest('You have no access right to delete this comment');
   return context;
 };

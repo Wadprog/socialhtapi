@@ -8,11 +8,11 @@ export default async function requireLogin(context: HookContext) {
     }
 
     const token = context.params.headers.authorization.split(" ")[1];
-    console.log({ token });
+
     try {
-       
-        const decoded = jwt.verify(token, process.env.AUTHENTICATION_SECRET);
-         context.params.user = {id:decoded.sub};
+
+        const decoded = jwt.verify(token, process.env.AUTHENTICATION_SECRET) as jwt.JwtPayload;
+        context.params.user = { id: decoded.sub };
     } catch (e) {
         throw new BadRequest("Invalid token");
     }

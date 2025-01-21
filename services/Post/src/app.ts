@@ -1,59 +1,74 @@
 /* eslint-disable no-unused-vars */
 import cors from 'cors';
-// import helmet from 'helmet';
+import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import express from '@feathersjs/express';
 import configuration from '@feathersjs/configuration';
-import { Request, Response, NextFunction } from 'express';
+import feathers from '@feathersjs/feathers';
+import { Application } from '@feathersjs/express';
+import { sequelizeWrapper } from '@webvital/micro-common';
+import { Options } from 'sequelize';
 
-import feathers, {
-  HookContext as FeathersHookContext,
-} from '@feathersjs/feathers';
-
-import database from './models';
+/** Custom dependencies */
 import services from './services';
-import sequelize from './sequelize';
-import middleware from './middleware';
-import common from './utils/common';
-import { Application } from './declarations';
+import initializeDatabase from './models';
 import authentication from './authentication';
 
 dotenv.config();
-const { sendErrorResponse } = common;
+class App {
 
-const app: Application = express(feathers());
-app.configure(configuration());
-app.use(express.json());
+    private db_initialized: boolean = false
+    private app: Application = express(feathers());
 
-app.use(cors());
-// app.use(helmet());
+    get server() {
+        if (!this.db_initialized)
+            throw new Error('Server has not been initialized')
+        return this.app
+    }
 
-app.use(morgan('dev', { skip: (req, res) => process.env.NODE_ENV === 'test' }));
-app.use(express.urlencoded({ extended: true }));
+    constructor() {
+        this._init()
+    }
 
-app.configure(express.rest());
+    configure(callback: (app: Application) => void) {
+        callback(this.server)
+    }
 
-app.configure(sequelize);
+    private _init() {
+        this.app.configure(configuration());
+        this.app.use(express.json());
+        this.app.use(cors());
+        this.app.use(helmet());
+        this.app.use(morgan('dev', { skip: (req, res) => process.env.NODE_ENV === 'test' }));
+        this.app.use(express.urlencoded({ extended: true }));
+        this.app.configure(express.rest());
+    }
 
-app.configure(middleware);
-// app.configure(authentication);
-app.configure(database);
-app.get('startSequelize')();
-app.configure(services);
-app.use(express.notFound());
-app.use(express.errorHandler({ logger: console } as any));
+    startSequelize() {
+        const { models } = sequelizeWrapper.client;
+        Object.keys(models).forEach((name) => {
+            if ('associate' in models[name]) {
+                (models[name] as any).associate(models);
+            }
+        });
+    }
 
-// @ts-ignore
-app.use(function (
-  err: Error | any,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  return sendErrorResponse(res, err.status || err.code || 500, [err]);
-});
-export type HookContext<T = any> = {
-  app: Application;
-} & FeathersHookContext<T>;
-export default app;
+    async initialize(dbSetting: Options) {
+        sequelizeWrapper.connect(dbSetting)
+
+        this.db_initialized = true;
+        // this.configure(authentication);
+        initializeDatabase();
+        this.startSequelize();
+        this.configure(services);
+
+        this.server.use(express.notFound());
+        this.server.use(express.errorHandler({ logger: console } as any));
+
+        return sequelizeWrapper.client.authenticate()
+
+
+    }
+}
+export default new App();

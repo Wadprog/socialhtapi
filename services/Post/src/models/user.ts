@@ -8,25 +8,25 @@ interface UserInterface {
 }
 
 export default (sequelize: any, DataTypes: any) => {
-  class User extends Model<UserInterface>  {
+  class User extends Model<UserInterface> {
 
     static associate(models: any) {
       User.hasMany(models.Post, {
         onDelete: 'CASCADE',
       });
-    
-      User.belongsToMany(models.Community, {
-        through: 'community_users',
-        onDelete: 'CASCADE',
-      });
+
+      // User.belongsToMany(models.Community, {
+      //   through: 'community_users',
+      //   onDelete: 'CASCADE',
+      // });
     }
   }
   User.init(
     {
       id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
+        autoIncrement: true,
         allowNull: false,
       },
 

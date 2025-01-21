@@ -1,10 +1,12 @@
 import { Service, SequelizeServiceOptions } from 'feathers-sequelize';
+import { Model } from 'sequelize';
 
 import { Application } from '../../declarations';
 import { Params } from '@feathersjs/feathers';
 import { BadRequest } from '@feathersjs/errors';
 import isNil from 'lodash/isNil';
-import { UserInterface } from '@webvital/micro-common';
+import { UserInterface, sequelizeWrapper } from '@webvital/micro-common';
+import { isBefore } from 'date-fns'
 
 
 export class VerifyEmail extends Service<UserInterface> {
@@ -15,26 +17,30 @@ export class VerifyEmail extends Service<UserInterface> {
 
   }
 
-  async create(data: UserInterface, params: Params) {
+  async create(data: UserInterface, params: Params): Promise<UserInterface> {
 
-    const { User } = this.app.get('sequelizeClient').models;
-    const user = await User.findByPk(params.users.id);
+    const { User } = sequelizeWrapper.client.models;
+    const user = await User.findByPk<Model<UserInterface>>(params.users.id);
 
     if (isNil(user))
       throw new BadRequest('User not found');
 
-    // check if the verification key is expired 
-    if (user.emailKeyExpires < Date.now())
+    //@ts-ignore
+    if (isBefore(user.emailKeyExpires, Date()))
       throw new BadRequest('Verification key expired, request a new one');
 
+    //@ts-ignore
     if (user.emailVerificationKey !== data.emailVerificationKey)
       throw new BadRequest('Invalid verification key');
-
+    //@ts-ignore
     user.emailVerified = true;
+    //@ts-ignore
     user.emailKeyExpires = null;
+    //@ts-ignore
     user.emailVerificationKey = null;
     await user.save();
-    return Promise.resolve(user);
+    return Promise.resolve(user.get({ plain: true }));
+
 
 
   }

@@ -5,6 +5,7 @@ import hooks from './posts.hook';
 import { Posts } from './posts.class';
 // import { postStorage } from '../../cloudinary';
 import { Application } from '../../declarations';
+import { sequelizeWrapper } from '@webvital/micro-common';
 // import transferUploadedFilesToFeathers from '../../middleware/PassFilesToFeathers/file-to-feathers.middleware';
 // import {
 //   MEDIA_CONFIG_SCHEMA,
@@ -19,7 +20,7 @@ declare module '../../declarations' {
 }
 
 export default function (app: Application): void {
-  const sequelize = app.get('sequelizeClient');
+  const sequelize = sequelizeWrapper.client;
   const options = {
     Model: sequelize.models.Post,
     paginate: app.get('paginate'),
@@ -27,19 +28,19 @@ export default function (app: Application): void {
 
   // const configuration: MEDIA_CONFIG_TYPE = app.get('MEDIA_CONFIGURATION');
   // if (MEDIA_CONFIG_SCHEMA.parse(configuration)) {
-    // Initialize our service with any options it requires
-    app.use(
-      '/posts',
-      // postStorage.fields([
-      //   { name: 'postImage', maxCount: configuration.maxPostImages },
-      //   { name: 'postVideo', maxCount: configuration.maxPostVideos },
-      //   { name: 'postAudio', maxCount: configuration.maxPostAudios },
-      // ]),
-      // transferUploadedFilesToFeathers,
-      new Posts(options, app)
-    );
+  // Initialize our service with any options it requires
+  app.use(
+    '/posts',
+    // postStorage.fields([
+    //   { name: 'postImage', maxCount: configuration.maxPostImages },
+    //   { name: 'postVideo', maxCount: configuration.maxPostVideos },
+    //   { name: 'postAudio', maxCount: configuration.maxPostAudios },
+    // ]),
+    // transferUploadedFilesToFeathers,
+    new Posts(options, app)
+  );
 
-    const service = app.service('posts');
-    service.hooks(hooks);
-  }
+  const service = app.service('posts');
+  service.hooks(hooks);
+}
 // }

@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: address
-          # image: us.gcr.io/storm-wall-444412-i5/address
-          image: waddprog/vwn_address
+          image: us.gcr.io/storm-wall-444412-i5/vwn_address
+          # image: waddprog/vwn_address
           # imagePullPolicy: Never
           env:
             - name: JWT_KEY

@@ -1,30 +1,30 @@
 import commonHooks from 'feathers-hooks-common';
 import * as authentication from '@feathersjs/authentication';
 
-// import { AutoOwn, LimitToOwner, IncludeAssociations } from '../../Hooks';
+import { AutoOwn, LimitToOwner, IncludeAssociations } from '../../Hooks';
 
-const { authenticate } = authentication.hooks;
+// const { authenticate } = authentication.hooks;
+import requireLogin from "../../Hooks/requireLogin";
 
-// const UserAttributes = [
-//   'firstName',
-//   'lastName',
-//   'id',
-//   'profilePicture',
-//   'createdAt',
-// ];
+const UserAttributes = [
+  'firstName',
+  'lastName',
+  'id',
+  'profilePicture',
+];
 export default {
   before: {
     all: [
-      authenticate('jwt'),
-      // IncludeAssociations({
-      //   include: [
-      //     {
-      //       model: 'korem',
-      //       as: 'User',
-      //       attributes: UserAttributes,
-      //     },
-      //   ],
-      // }),
+      requireLogin,
+      IncludeAssociations({
+        include: [
+          {
+            model: 'korem',
+            as: 'User',
+            attributes: UserAttributes,
+          },
+        ],
+      }),
     ],
     // find: [],
     // get: [],

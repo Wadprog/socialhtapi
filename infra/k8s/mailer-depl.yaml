@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: mailer
-          # image: us.gcr.io/storm-wall-444412-i5/mailer
-          image: waddprog/vwn_mailer
+          image: us.gcr.io/storm-wall-444412-i5/vwn_mailer
+          # image: waddprog/vwn_mailer
           # imagePullPolicy: Never
           env:
             - name: JWT_KEY

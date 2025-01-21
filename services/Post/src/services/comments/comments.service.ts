@@ -3,6 +3,7 @@ import { ServiceAddons } from '@feathersjs/feathers';
 import { Application } from '../../declarations';
 import { Comments } from './comments.class';
 import hooks from './comments.hook';
+import { sequelizeWrapper } from '@webvital/micro-common'
 
 // Add this service to the service type index
 declare module '../../declarations' {
@@ -13,7 +14,7 @@ declare module '../../declarations' {
 }
 
 export default function (app: Application): void {
-  const sequelize = app.get('sequelizeClient');
+  const sequelize = sequelizeWrapper.client;
   const options = {
     Model: sequelize.models.Post,
     paginate: app.get('paginate'),

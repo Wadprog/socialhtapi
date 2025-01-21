@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: post
-          # image: us.gcr.io/storm-wall-444412-i5/post
-          image: waddprog/vwn_post
+          image: us.gcr.io/storm-wall-444412-i5/vwn_post
+          # image: waddprog/vwn_post
           # imagePullPolicy: Never
           env:
             - name: JWT_KEY

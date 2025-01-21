@@ -12,6 +12,8 @@ export interface MediaInterface {
   medium: string;
   small: string;
   tiny: string;
+  width: string,
+  height: string,
 }
 export default (sequelize: any, DataTypes: any) => {
   class Media extends Model<MediaInterface> {
@@ -52,6 +54,14 @@ export default (sequelize: any, DataTypes: any) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      height: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      width: {
+        type: DataTypes.STRING,
+        allowNull: true
+      }
     },
 
     {

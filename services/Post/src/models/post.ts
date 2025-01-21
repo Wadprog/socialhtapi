@@ -7,6 +7,7 @@ export interface PostInterface {
   postText: string;
   privacyType: string;
   locked: boolean;
+  userId: number
 }
 export default (sequelize: any, DataTypes: any) => {
   class Post extends Model<PostInterface> {
@@ -21,10 +22,10 @@ export default (sequelize: any, DataTypes: any) => {
 
       });
       Post.hasMany(models.Post, { as: 'Comments' });
-      Post.hasMany(models.Korem, {
-        foreignKey: 'post_id',
-        constraints: false,
-      });
+      // Post.hasMany(models.Korem, {
+      //   foreignKey: 'post_id',
+      //   constraints: false,
+      // });
     }
   }
   Post.init(
@@ -49,6 +50,15 @@ export default (sequelize: any, DataTypes: any) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
+
+      userId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'users',
+          key: 'id',
+
+        },
+      }
     },
 
     {
@@ -63,7 +73,6 @@ export default (sequelize: any, DataTypes: any) => {
       tableName: 'posts',
       underscored: true,
       updatedAt: false,
-      createdAt: false,
     }
   );
   return Post;

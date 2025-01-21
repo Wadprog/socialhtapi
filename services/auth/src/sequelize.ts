@@ -1,7 +1,4 @@
-/* eslint-disable no-useless-catch */
-/* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
-import { Sequelize } from 'sequelize';
+import { Sequelize, Dialect, Options, QueryOptions, QueryOptionsWithType, QueryTypes } from 'sequelize';
 import { Application } from "./declarations";
 
 const config = require('config');
@@ -9,9 +6,9 @@ const dbSettings = config.get('dbSettings');
 
 // console.log({ dbSettings: config.get('DB_PASSWORD')})
 
-const dbs = {
+const dbs: Options = {
   host: 'auth-posgres-srv',
-  dialect: 'postgres',
+  dialect: 'postgres' as Dialect,
   database: 'auth',
   username: 'postgres',
   password: 'postgres'
@@ -23,28 +20,21 @@ if (process.env.NODE_ENV === 'test') {
 
 console.log({ dbs })
 export default function (app: Application): void {
+
+  console.log('default function worked')
   let sequelize: any = undefined;
-  // @ts-ignore
 
     sequelize = dbSettings.url
       ? new Sequelize(dbSettings.url)
-      // @ts-ignore
-      : new Sequelize({
-        logging: false,
-        ...dbs,
-        seederStorge: 'sequelize',
-      });
+      : new Sequelize(dbs);
 
-
-
-  // handling sequelize query error
-  // sequelize.query = async function (...args) {
-  //   try {
-  //     return await Sequelize.prototype.query.apply(this, args);
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // };
+  sequelize.query = async function (...args: [sql: string | { query: string; values: unknown[]; }, options?: QueryOptions | QueryOptionsWithType<QueryTypes.RAW> | undefined]) {
+    try {
+      return await Sequelize.prototype.query.apply(this, args);
+    } catch (err) {
+      throw err;
+    }
+  };
 
   // const oldSetup = app.setup;
   app.set('sequelizeClient', sequelize);

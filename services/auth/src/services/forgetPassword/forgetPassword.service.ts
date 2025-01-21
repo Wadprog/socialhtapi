@@ -3,6 +3,7 @@ import { ServiceAddons } from '@feathersjs/feathers';
 import { ForgetPassword } from './forgetPassword.class';
 import hooks from './forgetPassoword.hooks';
 import { Application } from '../../declarations';
+import {sequelizeWrapper} from '@webvital/micro-common'
 
 declare module '../../declarations' {
   // eslint-disable-next-line no-unused-vars
@@ -12,8 +13,7 @@ declare module '../../declarations' {
 }
 
 export default function (app: Application): void {
-  const sequelize = app.get('sequelizeClient');
-  const UserModel = sequelize.models.Auth;
+  const UserModel = sequelizeWrapper.client.models.Auth;
   const options = {
     Model: UserModel,
     paginate: undefined,

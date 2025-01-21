@@ -69,9 +69,16 @@ function onError(error: any): void {
 // database.sequelize.sync({ logging: false, alter: true }).then(() => {
 const run = async () => {
     try {
+        app.initialize({
+            host: 'auth-posgres-srv',
+            dialect: 'postgres',
+            database: 'auth',
+            username: 'postgres',
+            password: 'postgres'
+        })
         await natsWrapper.connect('ticketing', 'auth-service', 'http://nats-srv:4222');
 
-        const server = createServer(app);
+        const server = createServer(app.server);
         server.listen(port);
         server.on('error', onError);
         server.on('listening', onListening(server));

@@ -2,6 +2,7 @@
 import { ServiceAddons } from '@feathersjs/feathers';
 import { Application } from '../../declarations';
 import { Korem } from './korem.class';
+import { sequelizeWrapper } from '@webvital/micro-common';
 
 import hooks from './korem.hooks';
 
@@ -15,7 +16,7 @@ declare module '../../declarations' {
 
 export default function (app: Application): void {
   const options = {
-    Model: app.get('sequelizeClient').models.Korem,
+    Model: sequelizeWrapper.client.models.Korem,
     paginate: app.get('paginate'),
   };
 

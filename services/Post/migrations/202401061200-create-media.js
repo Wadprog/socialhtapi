@@ -37,6 +37,24 @@ module.exports = {
           onDelete: 'cascade'
         },
       },
+
+      height: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      width: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      post_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'posts',
+          key: 'id',
+          onDelete: 'cascade'
+        },
+      },
       created_at: {
         type: DataTypes.DATE,
         allowNull: false,

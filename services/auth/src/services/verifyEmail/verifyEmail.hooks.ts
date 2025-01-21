@@ -5,6 +5,7 @@ import * as feathersAuthentication from '@feathersjs/authentication';
 import publish from './hooks/publisher';
 import protectedkey from '../../libs/protectedkey';
 import { verifyEmailSchema } from '../../schema/verifyEmail';
+import { HookContext } from '@feathersjs/feathers';
 
 
 const { protect } = local.hooks;

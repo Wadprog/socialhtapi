@@ -32,6 +32,7 @@ module.exports = {
       },
       user_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
           model: 'users',
           key: 'id',
@@ -45,6 +46,12 @@ module.exports = {
           key: 'id',
           onDelete: 'CASCADE',
         },
+      },
+
+      created_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
       },
     });
   },

@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: auth
-          # image: us.gcr.io/storm-wall-444412-i5/auth
-          image: waddprog/vwn_auth
+          image: us.gcr.io/storm-wall-444412-i5/vwn_auth
+          # image: waddprog/vwn_auth
           # imagePullPolicy: Never
           env:
             - name: JWT_KEY

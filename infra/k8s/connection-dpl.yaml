@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: connection
-          # image: us.gcr.io/storm-wall-444412-i5/connection
-          image: waddprog/vwn_connection
+          image: us.gcr.io/storm-wall-444412-i5/vwn_connection
+          # image: waddprog/vwn_connection
           # imagePullPolicy: Never
           env:
             - name: JWT_KEY
