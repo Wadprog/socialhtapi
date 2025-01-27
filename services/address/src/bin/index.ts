@@ -36,6 +36,7 @@ const Logger = console
 const run = async () => {
     const port = normalizePort(process.env.PORT || 3000);
     try {
+        
         const server = createServer(app);
         await natsWrapper.connect('ticketing', 'address-service', 'http://nats-srv:4222')
         listeners();

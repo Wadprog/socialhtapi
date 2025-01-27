@@ -29,6 +29,7 @@ export class Posts extends Service {
 
   async create(data, params: Params) {
     const postData = getUploadedFiles(['postImage', 'postVideo'], data);
+    console.log(' post Data', postData);
     const post = await this.app
       .service('posts')
       .Model.create(postData, { include: include(this.app) });

@@ -1,6 +1,7 @@
 import { Server } from 'http';
 import Logger from '../utils/logger';
 
+type ENVS= 'CLOUDINARY_API_KEY'| 'CLOUDINARY_CLOUD_NAME'|'CLOUDINARY_API_SECRET'
 export default {
   onListening(server: Server, host?: string) {
     const addr = server.address();
@@ -36,11 +37,13 @@ export default {
     if (port >= 0) return port;
     return null;
   },
-  envConfigurationCheck(): void {
-    const mustHaveEnvVars = ['MIN_AGE'];
+  
+  envConfigurationCheck(): boolean {
+    const mustHaveEnvVars = ['CLOUDINARY_API_KEY', 'CLOUDINARY_CLOUD_NAME','CLOUDINARY_API_SECRET'];
     const missingEnvVars = mustHaveEnvVars.filter((envVar) => !process.env[envVar]);
     if (missingEnvVars.length > 0) {
       throw new Error(`Server cannot start missing required environment variables: ${missingEnvVars.join(', ')}`);
     }
+    return true;
   }
 };

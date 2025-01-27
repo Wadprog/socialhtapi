@@ -1,6 +1,6 @@
 import { Params } from '@feathersjs/feathers';
 import { Service, SequelizeServiceOptions } from 'feathers-sequelize';
-
+import { sequelizeWrapper } from '@webvital/micro-common';
 /** Local dependencies */
 import common from '../../utils/common';
 import { Application } from '../../declarations';
@@ -17,13 +17,12 @@ export class Posts extends Service {
     this.app = app;
   }
 
-  // async create(data:any, params: Params) {
-  //   const postData = getUploadedFiles(['postImage', 'postVideo'], data);
-  //   const post = await this.app
-  //     .service('posts')
-  //     .Model.create(postData, { include: include(this.app) });
+  async create(data:any, params: Params) {
+    const postData = getUploadedFiles(['postImage', 'postVideo'], data);
+    console.log(' post Data', postData);
+    const post = await sequelizeWrapper.client.models.Post.create(postData);
 
-  //   return Promise.resolve(post);
-  // }
+    return Promise.resolve(post);
+  }
 
 }

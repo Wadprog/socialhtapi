@@ -23,7 +23,7 @@
     "@feathersjs/socketio": "^4.5.14",
     "@feathersjs/transport-commons": "^5.0.0-pre.20",
     "@sequelize/core": "^7.0.0-alpha.10",
-    "@webvital/micro-common": "^1.0.20",
+    "@webvital/micro-common": "^1.0.21",
     "cloudinary": "^1.28.1",
     "config": "^3.3.12",
     "cors": "^2.8.5",

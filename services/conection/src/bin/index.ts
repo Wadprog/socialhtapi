@@ -23,6 +23,7 @@ server.on('error', (err) => {
   helper.onError(err, /*API_CONFIGURATION.port*/ 3000);
 });
 
+// 3533 >>> 
 server.on('listening', async () => {
   // helper.envConfigurationCheck();
   await natsWrapper.connect('ticketing', 'connection-service', 'http://nats-srv:4222')

@@ -23,12 +23,27 @@ spec:
                 secretKeyRef:
                   name: jwt-secret
                   key: JWT_KEY
+            - name : CLOUDINARY_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cloudinary-secret-api-key
+                  key: CLOUDINARY_API_KEY
+            - name : CLOUDINARY_API_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: cloudinary-api-secret
+                  key: CLOUDINARY_API_SECRET
+            - name : CLOUDINARY_CLOUD_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: cloudinary-cloud-name
+                  key: CLOUDINARY_CLOUD_NAME
           # resources:
           #   limits:
-          #     memory: "64Mi"
-          #     cpu: "250m"
+          #     memory: "256Mi"
+          #     cpu: "500m"
           #   requests:
-          #     memory: "64Mi"
+          #     memory: "128Mi"
           #     cpu: "250m"
 
 ---

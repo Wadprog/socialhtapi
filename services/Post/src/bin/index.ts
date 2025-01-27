@@ -1,40 +1,22 @@
 
 import app from '../app';
-import Logger from '../utils/logger';
-import {
-  ApiConfigurationType,
-  API_CONFIG_SCHEMA,
-} from '../schema/serverConf.schema';
 import helper from './sever_helper';
+import Logger from '../utils/logger';
+import startListeners from '../events'
+import {natsWrapper} from '@webvital/micro-common'
 
-// const API_CONFIGURATION: ApiConfigurationType = app.get('API_CONFIGURATION');
+console.log('Starting up... **post-service***');
 
-// const port = 3000;
-// if (API_CONFIG_SCHEMA.parse(API_CONFIGURATION)) {
-//   // port = helper.normalizePort(API_CONFIGURATION.port);
-//   const server = app.listen(port);
+if(!helper.envConfigurationCheck()){
+  console.log('Environment variables are not set properly');
 
-//   server.on('error', (err) => {
-//     helper.onError(err, API_CONFIGURATION.port);
-//   });
-//   server.on('listening', () => {
-//     helper.envConfigurationCheck();
-//     app
-//       .get('sequelizeSync')
-//       .then(() => {
-//         helper.onListening(server, API_CONFIGURATION.host);
-//       })
-//       .catch((error:any) => {
-//         Logger.error(error);
-//         process.exit(1);
-//       });
-//   });
-// }
+//   Logger.error('Environment variables are not set properly');
+//   throw new Error('Environment variables are not set properly');
+//   process.exit(1);
+}
 
+const port = 3000//helper.normalizePort(3000);
 
-const port = 3000;
-// if (API_CONFIG_SCHEMA.parse(API_CONFIGURATION)) {
-// port = helper.normalizePort(3000)//API_CONFIGURATION.port);
 
 app.initialize({
   host: 'post-posgres-srv',
@@ -48,12 +30,14 @@ const server = app.server.listen(port);
 
 
 server.on('error', (err) => {
-  helper.onError(err, /*API_CONFIGURATION.port*/ 3000);
+  // helper.onError(err, /*API_CONFIGURATION.port*/ 3000);
+  Logger.error(err);
 });
 
 server.on('listening', async () => {
-  // helper.envConfigurationCheck();
-  // await natsWrapper.connect('ticketing', 'connection-service', 'http://nats-srv:4222')
-  // listeners();
+ 
+  
+  await natsWrapper.connect('ticketing', 'post-service', 'http://nats-srv:4222')
+  startListeners()
   console.log(`Server listening on port ${port}`);
 });

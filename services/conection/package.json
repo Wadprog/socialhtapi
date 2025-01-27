@@ -27,7 +27,7 @@
     "@feathersjs/transport-commons": "^5.0.0-pre.20",
     "@sequelize/core": "^7.0.0-alpha.10",
     "@types/morgan": "^1.9.3",
-    "@webvital/micro-common": "^1.0.17",
+    "@webvital/micro-common": "^1.0.21",
     "cloudinary": "^1.28.1",
     "config": "^3.3.7",
     "cors": "^2.8.5",

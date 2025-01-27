@@ -5,11 +5,15 @@ import * as feathersAuthentication from '@feathersjs/authentication';
 import isSelf from '../../Hooks/isSelf.hook';
 import saveProfilePicture from '../../Hooks/SaveProfilePictures.hooks';
 import MediaStringToMediaObject from '../../Hooks/ProfileCoverToObject';
+
+// import newPerson from './hook/newPerson';
 import {
   AddVisitor,
   GetUser,
+  NewPerson
 
 } from './hook';
+
 
 // import SaveAndAttachInterests from '../../Hooks/SaveAndAttachInterest';
 
@@ -41,6 +45,8 @@ export default {
 
   after: {
     all: [MediaStringToMediaObject(['profilePicture', 'coverPicture'])],
+
+    create:NewPerson,
     find: [protectkeys],
     // get: [AddVisitor, protectkeys],
     patch: [protectkeys],
